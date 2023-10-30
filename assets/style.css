@@ -1,0 +1,28 @@
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 18pt;
+}
+
+section {
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 32pt;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 26pt;
+}
+
+button {
+    padding: 4px;
+    background-color:lavender;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color:rgb(145, 145, 223);
+    color: white;
+}
