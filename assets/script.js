@@ -36,8 +36,63 @@ class LeaderboardItem {
 }
 
 // Main Quiz Methods
-function SelectOption() {
+var QuizTimer = setInterval;
+var Score = 0;
 
+function StartQuiz() {
+    QuestionNum = 0;
+    Score = 0;
+    DisplayQuestion();
+    var time = 90;
+    QuizTimer.SetInterval(() => {
+        time--;
+        if (time == 0) {
+            clearInterval(QuizTimer);
+            EndQuiz();
+        }
+    }, 1000);
+}
+
+function DisplayQuestion() {
+    QuizSection.classList.remove('mark-correct', 'mark-wrong');
+    QuestionNum++;
+    if (QuestionNum > QuizQuestions.length) {
+        clearInterval(QuizTimer);
+        EndQuiz();
+    } else {
+        QuizQuestions[QuestionNum].ApplyQuestion(QuizSection);
+    }
+}
+
+function SelectOption() {
+    this.classList.add('selected');
+    if (this.classList.contains('correct-answer')) {
+        QuizSection.classList.add('mark-correct');
+        Score++;
+    } else {
+        QuizSection.classList.add('mark-wrong');
+    }
+    var secondDelay = 2;
+    var nextQuestionDelay = setInterval(() => {
+        secondDelay--;
+        if (secondDelay == 0) {
+            clearInterval(nextQuestionDelay);
+            DisplayQuestion();
+        }
+    }, 1000);
+}
+
+function EndQuiz() {
+    QuizSection.hidden = true;
+    ResultSection.hidden = false;
+    ResultSection.querySelector('h2').querySelector('span').textContent = Score;
+}
+
+function registerLeaderboard(El) {
+    if (El.textContent != "") {
+        AddToLeaderboard(El.textContent, Score);
+        DisplayLeaderboard();
+    }
 }
 
 // Leaderboard Methods
@@ -85,12 +140,15 @@ const BeginQuizBtn = document.getElementById('begin-quiz');
 const ResultReturnBtn = document.getElementById('result-return-start');
 const LeaderboardReturnBtn = document.getElementById('list-retunr-start');
 
+const QuizOptions = QuizSection.querySelectorAll('button');
+
 const ResetLeaderboardBtn = document.getElementById('reset-list');
 
-// State Change Event Listeners
+// Event Listeners
 BeginQuizBtn.addEventListener('click', function() {
     LandingSection.hidden = true;
     QuizSection.hidden = false;
+    StartQuiz();
 });
 
 ResultReturnBtn.addEventListener('click', function() {
@@ -103,8 +161,28 @@ LeaderboardReturnBtn.addEventListener('click', function() {
     LandingSection = false;
 });
 
+QuizOptions.addEventListener('click', SelectOption());
+
 // Initialization of Local Storage for leaderboard
-var lbInit = JSON.parse(localStorage.getItem('leaderboard'));
-if (lbInit == null) {
+var lsInitLeaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+if (lsInitLeaderboard == null) {
     localStorage.setItem('leaderboard', JSON.stringify([]));
 }
+
+// Initialization of Local Storage for Questions
+const QuizQuestions = JSON.parse(localStorage.getItem('questions'));
+if (QuizQuestions == null) {
+    var questions = [
+        new QuestionSet(
+            'What statement is used for conditional branching?',
+            'if',
+            'while',
+            'then',
+            'when',
+            1
+        )
+    ];
+    localStorage.setItem('questions', JSON.stringify(questions));
+}
+
+var QuestionNum = 0;
