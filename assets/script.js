@@ -1,3 +1,4 @@
+// Classes
 class QuestionSet {
     constructor(question, option1, option2, option3, option4, correctAnswer) {
         this.question = question;
@@ -34,10 +35,12 @@ class LeaderboardItem {
     }
 }
 
+// Main Quiz Methods
 function SelectOption() {
 
 }
 
+// Leaderboard Methods
 function AddToLeaderboard(name, score) {
     var rankings = JSON.parse(localStorage.getItem('leaderboard'));
     rankings.push(new LeaderboardItem(name, score));
@@ -72,6 +75,7 @@ function ResetLeaderboard() {
     localStorage.setItem('leaderboard', JSON.stringify([]));
 }
 
+// DOM Objects
 const LandingSection = document.getElementById('Landing');
 const QuizSection = document.getElementById('Quiz');
 const ResultSection = document.getElementById('Result');
@@ -83,6 +87,7 @@ const LeaderboardReturnBtn = document.getElementById('list-retunr-start');
 
 const ResetLeaderboardBtn = document.getElementById('reset-list');
 
+// State Change Event Listeners
 BeginQuizBtn.addEventListener('click', function() {
     LandingSection.hidden = true;
     QuizSection.hidden = false;
@@ -98,6 +103,7 @@ LeaderboardReturnBtn.addEventListener('click', function() {
     LandingSection = false;
 });
 
+// Initialization of Local Storage for leaderboard
 var lbInit = JSON.parse(localStorage.getItem('leaderboard'));
 if (lbInit == null) {
     localStorage.setItem('leaderboard', JSON.stringify([]));
