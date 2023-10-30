@@ -18,11 +18,40 @@ h2 {
 
 button {
     padding: 4px;
-    background-color:lavender;
+    background-color: lavender;
 }
 
 button:hover {
     cursor: pointer;
     background-color:rgb(145, 145, 223);
     color: white;
+}
+
+#Leaderboard #high-score-list {
+    background-color: lavender;
+    width: 50vw;
+    padding: 10px;
+}
+
+#Leaderboard li {
+    padding: 4px;
+    background-color: rgb(204, 204, 235);
+}
+
+#Leaderboard li span {
+    display: float;
+}
+
+#Leaderboard li .rankNum {
+    font-weight: bold;
+    float: left;
+}
+
+#Leaderboard li .rankName {
+    float: left;
+}
+
+#Leaderboard li .rankScore {
+    font-weight: bold;
+    float: right;
 }
