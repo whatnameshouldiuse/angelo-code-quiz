@@ -27,11 +27,78 @@ class QuestionSet {
     }
 }
 
-function selectOption() {
-    
+class LeaderboardItem {
+    constructor(name, score) {
+        this.name = name;
+        this.score = score;
+    }
 }
 
-var LandingSection = document.getElementById('Landing');
-var QuizSection = document.getElementById('Quiz');
-var ResultSection = document.getElementById('Result');
-var LeaderboardSection = document.getElementById('Leaderboard');
+function SelectOption() {
+
+}
+
+function AddToLeaderboard(name, score) {
+    var rankings = JSON.parse(localStorage.getItem('leaderboard'));
+    rankings.push(new LeaderboardItem(name, score));
+    rankings.sort((r1, r2) => {return r1 > r2});
+    localStorage.setItem('leaderboard', JSON.stringify(rankings));
+}
+
+function DisplayLeaderboard() {
+    var listHtml = document.getElementById('high-score-list');
+    listHtml.innerHTML = "";
+
+    var rankings = JSON.parse(localStorage.getItem('leaderboard'));
+    rankings.forEach((ranking, index) => {
+        var rankLi = document.createElement("li");
+        var rankNum = document.createElement("span");
+        var rankName = document.createElement("span");
+        var rankScore = document.createElement("span");
+
+        rankNum.textContent = index;
+        rankName.textContent = ranking.name;
+        rankScore.textContent = ranking.score;
+        
+        rankLi.appendChild(rankNum);
+        rankLi.appendChild(rankName);
+        rankLi.appendChild(rankScore);
+
+        listHtml.appendChild(rankLi);
+    });
+}
+
+function ResetLeaderboard() {
+    localStorage.setItem('leaderboard', JSON.stringify([]));
+}
+
+const LandingSection = document.getElementById('Landing');
+const QuizSection = document.getElementById('Quiz');
+const ResultSection = document.getElementById('Result');
+const LeaderboardSection = document.getElementById('Leaderboard');
+
+const BeginQuizBtn = document.getElementById('begin-quiz');
+const ResultReturnBtn = document.getElementById('result-return-start');
+const LeaderboardReturnBtn = document.getElementById('list-retunr-start');
+
+const ResetLeaderboardBtn = document.getElementById('reset-list');
+
+BeginQuizBtn.addEventListener('click', function() {
+    LandingSection.hidden = true;
+    QuizSection.hidden = false;
+});
+
+ResultReturnBtn.addEventListener('click', function() {
+   ResultSection.hidden = true;
+   LandingSection = false; 
+});
+
+LeaderboardReturnBtn.addEventListener('click', function() {
+    LeaderboardSection.hidden = true;
+    LandingSection = false;
+});
+
+var lbInit = JSON.parse(localStorage.getItem('leaderboard'));
+if (lbInit == null) {
+    localStorage.setItem('leaderboard', JSON.stringify([]));
+}
