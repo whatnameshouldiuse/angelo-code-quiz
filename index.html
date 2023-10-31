@@ -8,10 +8,10 @@
 </head>
 <body>
     <header id="Timer">
-        
+
     </header>
     <div class="container">
-        <section id="Landing">
+        <section id="Landing" hidden>
             <h1>Coding Quiz Challenge</h1>
             <p>Answer as many coding questions within the time limit!</p>
             <button id="begin-quiz">Start the Quiz!</button>
@@ -26,14 +26,15 @@
         <section id="Result" hidden>
             <h1>You finished the quiz!</h1>
             <h2>Your score: <span></span></h2>
-            <input type="text" placeholder="Enter your name" onkeydown="RegisterLeaderboard(this)"/>
+            <input type="text" placeholder="Enter your name">
+            <button id="result-list-submit">Submit Leaderboard</button>
             <button id="result-return-start">Return to Start</button>
         </section>
-        <section id="Leaderboard" hidden>
+        <section id="Leaderboard">
             <h1>High Scores</h1>
-            <ol id="high-score-list">
+            <div id="high-score-list">
     
-            </ol>
+            </div>
             <button id="list-return-start">Return to Start</button>
             <button id="reset-list">Reset Leaderboard</button>
         </section>

@@ -77,25 +77,29 @@ button:disabled {
     padding: 10px;
 }
 
-#Leaderboard li {
+#Leaderboard #high-score-list div {
     padding: 4px;
+    margin: 5px 0;
     background-color: rgb(204, 204, 235);
+    color: black;
+    display: flex;
+    justify-content: space-between;
 }
 
-#Leaderboard li span {
-    display: float;
-}
-
-#Leaderboard li .rankNum {
+#Leaderboard #high-score-list .rankNum {
     font-weight: bold;
-    float: left;
+    left: 0;
 }
 
-#Leaderboard li .rankName {
-    float: left;
+#Leaderboard #high-score-list .rankName {
+    margin: 0 10px;
 }
 
-#Leaderboard li .rankScore {
+#Leaderboard #high-score-list .rankScore {
     font-weight: bold;
-    float: right;
+    right: 0;
+}
+
+#Leaderboard button {
+    margin: 10px 0;
 }

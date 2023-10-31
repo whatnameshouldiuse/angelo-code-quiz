@@ -27,6 +27,8 @@ const BeginQuizBtn = document.getElementById('begin-quiz');
 const ResultReturnBtn = document.getElementById('result-return-start');
 const LeaderboardReturnBtn = document.getElementById('list-return-start');
 
+const ResultSubmitBtn = document.getElementById('result-list-submit');
+
 const ResetLeaderboardBtn = document.getElementById('reset-list');
 
 const TimerHeader = document.getElementById('Timer');
@@ -206,9 +208,10 @@ let EndQuiz = function() {
     TimerHeader.textContent = "";
 }
 
-let registerLeaderboard = function(El) {
-    if (El.textContent != "") {
-        AddToLeaderboard(El.textContent, Score);
+let registerLeaderboard = function() {
+    var El = ResultSection.querySelector('input');
+    if (El.value != "") {
+        AddToLeaderboard(El.value, Score);
         DisplayLeaderboard();
     }
 }
@@ -217,7 +220,7 @@ let registerLeaderboard = function(El) {
 let AddToLeaderboard = function(name, score) {
     var rankings = JSON.parse(localStorage.getItem('leaderboard'));
     rankings.push(new LeaderboardItem(name, score));
-    rankings.sort((r1, r2) => {return r1 > r2});
+    rankings.sort((r1, r2) => {return r1.Score > r2.Score});
     localStorage.setItem('leaderboard', JSON.stringify(rankings));
 }
 
@@ -227,14 +230,18 @@ let DisplayLeaderboard = function () {
 
     var rankings = JSON.parse(localStorage.getItem('leaderboard'));
     rankings.forEach((ranking, index) => {
-        var rankLi = document.createElement("li");
+        var rankLi = document.createElement("div");
         var rankNum = document.createElement("span");
         var rankName = document.createElement("span");
         var rankScore = document.createElement("span");
 
-        rankNum.textContent = index;
+        rankNum.textContent = index + 1;
         rankName.textContent = ranking.name;
         rankScore.textContent = ranking.score;
+
+        rankNum.classList.add('rankNum');
+        rankName.classList.add('rankName');
+        rankScore.classList.add('rankScore');
         
         rankLi.appendChild(rankNum);
         rankLi.appendChild(rankName);
@@ -242,10 +249,13 @@ let DisplayLeaderboard = function () {
 
         listHtml.appendChild(rankLi);
     });
+    ResultSection.hidden = true;
+    LeaderboardSection.hidden = false;
 }
 
 function ResetLeaderboard() {
     localStorage.setItem('leaderboard', JSON.stringify([]));
+    DisplayLeaderboard();
 }
 
 // Event Listeners
@@ -264,6 +274,10 @@ LeaderboardReturnBtn.addEventListener('click', function() {
     LeaderboardSection.hidden = true;
     LandingSection.hidden = false;
 });
+
+ResultSubmitBtn.addEventListener('click', registerLeaderboard);
+
+ResetLeaderboardBtn.addEventListener('click', ResetLeaderboard);
 
 QuizSection.children[1].addEventListener('click', SelectOption);
 QuizSection.children[2].addEventListener('click', SelectOption);
