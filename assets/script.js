@@ -132,17 +132,18 @@ const QuizQuestions = JSON.parse(localStorage.getItem('questions'));
 let QuestionNum = 0;
 let QuizTimer = setInterval;
 let Score = 0;
+let time = 90;
 
 let StartQuiz = function() {
     QuestionNum = 0;
     Score = 0;
     DisplayQuestion();
-    var time = 60;
+    time = 90;
     TimerHeader.textContent = 'Time Left: ' + time;
     QuizTimer = setInterval(function() {
         time--;
         TimerHeader.textContent = 'Time Left: ' + time;
-        if (time == 0) {
+        if (time <= 0) {
             clearInterval(QuizTimer);
             EndQuiz();
         }
@@ -189,6 +190,7 @@ let SelectOption = function(event) {
         Score++;
     } else {
         QuizSection.classList.add('mark-wrong');
+        time -= 10;
     }
     var delay = 1;
     var nextQuestionDelay = setInterval(() => {
@@ -196,7 +198,9 @@ let SelectOption = function(event) {
         if (delay == 0) {
             clearInterval(nextQuestionDelay);
             QuestionNum++;
-            DisplayQuestion();
+            if (time > 0) {
+                DisplayQuestion();
+            }
         }
     }, 1500);
 }
