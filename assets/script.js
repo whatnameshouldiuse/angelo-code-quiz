@@ -8,24 +8,6 @@ class QuestionSet {
         this.option4 = option4;
         this.correctAnswer = correctAnswer;
     }
-
-    /**
-     * 
-     * @param {HTMLElement} section 
-     */
-    ApplyQuestion(section) {
-        var allOptions = section.querySelectorAll('button');
-        allOptions.forEach((option) => {
-            option.classList.remove('correct-answer', 'selected');
-        })
-        section.children[this.correctAnswer].classList.add("correct-answer");
-
-        section.children[0].textContent = this.question;
-        section.children[1].textContent = this.option1;
-        section.children[2].textContent = this.option2;
-        section.children[3].textContent = this.option3;
-        section.children[4].textContent = this.option4;
-    }
 }
 
 class LeaderboardItem {
@@ -35,17 +17,55 @@ class LeaderboardItem {
     }
 }
 
-// Main Quiz Methods
-var QuizTimer = setInterval;
-var Score = 0;
+// DOM Objects
+const LandingSection = document.getElementById('Landing');
+const QuizSection = document.getElementById('Quiz');
+const ResultSection = document.getElementById('Result');
+const LeaderboardSection = document.getElementById('Leaderboard');
 
-function StartQuiz() {
+const BeginQuizBtn = document.getElementById('begin-quiz');
+const ResultReturnBtn = document.getElementById('result-return-start');
+const LeaderboardReturnBtn = document.getElementById('list-return-start');
+
+const ResetLeaderboardBtn = document.getElementById('reset-list');
+
+const TimerHeader = document.getElementById('Timer');
+
+// Initialization of Local Storage for leaderboard
+let lsInitLeaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+if (lsInitLeaderboard == null) {
+    localStorage.setItem('leaderboard', JSON.stringify([]));
+}
+
+// Initialization of Local Storage for Questions
+let IsInitQuestions = JSON.parse(localStorage.getItem('questions'));
+if (IsInitQuestions == null) {
+    var questions = [
+        new QuestionSet(
+            'What statement is used for conditional branching?',
+            'if',
+            'while',
+            'then',
+            'when',
+            1
+        )
+    ];
+    localStorage.setItem('questions', JSON.stringify(questions));
+}
+const QuizQuestions = JSON.parse(localStorage.getItem('questions'));
+
+let QuestionNum = 0;
+let QuizTimer = setInterval;
+let Score = 0;
+
+let StartQuiz = function() {
     QuestionNum = 0;
     Score = 0;
     DisplayQuestion();
     var time = 90;
-    QuizTimer.SetInterval(() => {
+    QuizTimer = setInterval(function() {
         time--;
+        TimerHeader.textContent = 'Time Left: ' + time;
         if (time == 0) {
             clearInterval(QuizTimer);
             EndQuiz();
@@ -53,20 +73,37 @@ function StartQuiz() {
     }, 1000);
 }
 
-function DisplayQuestion() {
+let DisplayQuestion = function() {
     QuizSection.classList.remove('mark-correct', 'mark-wrong');
-    QuestionNum++;
-    if (QuestionNum > QuizQuestions.length) {
+    if (QuestionNum > QuizQuestions.length - 1) {
         clearInterval(QuizTimer);
         EndQuiz();
     } else {
-        QuizQuestions[QuestionNum].ApplyQuestion(QuizSection);
+        ApplyQuestion(QuizQuestions[QuestionNum]);
     }
 }
 
-function SelectOption() {
-    this.classList.add('selected');
-    if (this.classList.contains('correct-answer')) {
+/**
+ * 
+ * @param {QuestionSet} question 
+ */
+let ApplyQuestion = function(question) {
+    var allOptions = QuizSection.querySelectorAll('button');
+    allOptions.forEach((option) => {
+        option.classList.remove('correct-answer', 'selected');
+    })
+    QuizSection.children[question.correctAnswer].classList.add("correct-answer");
+
+    QuizSection.children[0].textContent = question.question;
+    QuizSection.children[1].textContent = question.option1;
+    QuizSection.children[2].textContent = question.option2;
+    QuizSection.children[3].textContent = question.option3;
+    QuizSection.children[4].textContent = question.option4;
+}
+
+let SelectOption = function(event) {
+    event.currentTarget.classList.add('selected');
+    if (event.currentTarget.classList.contains('correct-answer')) {
         QuizSection.classList.add('mark-correct');
         Score++;
     } else {
@@ -77,18 +114,19 @@ function SelectOption() {
         secondDelay--;
         if (secondDelay == 0) {
             clearInterval(nextQuestionDelay);
+            QuestionNum++;
             DisplayQuestion();
         }
     }, 1000);
 }
 
-function EndQuiz() {
+let EndQuiz = function() {
     QuizSection.hidden = true;
     ResultSection.hidden = false;
     ResultSection.querySelector('h2').querySelector('span').textContent = Score;
 }
 
-function registerLeaderboard(El) {
+let registerLeaderboard = function(El) {
     if (El.textContent != "") {
         AddToLeaderboard(El.textContent, Score);
         DisplayLeaderboard();
@@ -96,14 +134,14 @@ function registerLeaderboard(El) {
 }
 
 // Leaderboard Methods
-function AddToLeaderboard(name, score) {
+let AddToLeaderboard = function(name, score) {
     var rankings = JSON.parse(localStorage.getItem('leaderboard'));
     rankings.push(new LeaderboardItem(name, score));
     rankings.sort((r1, r2) => {return r1 > r2});
     localStorage.setItem('leaderboard', JSON.stringify(rankings));
 }
 
-function DisplayLeaderboard() {
+let DisplayLeaderboard = function () {
     var listHtml = document.getElementById('high-score-list');
     listHtml.innerHTML = "";
 
@@ -130,20 +168,6 @@ function ResetLeaderboard() {
     localStorage.setItem('leaderboard', JSON.stringify([]));
 }
 
-// DOM Objects
-const LandingSection = document.getElementById('Landing');
-const QuizSection = document.getElementById('Quiz');
-const ResultSection = document.getElementById('Result');
-const LeaderboardSection = document.getElementById('Leaderboard');
-
-const BeginQuizBtn = document.getElementById('begin-quiz');
-const ResultReturnBtn = document.getElementById('result-return-start');
-const LeaderboardReturnBtn = document.getElementById('list-retunr-start');
-
-const QuizOptions = QuizSection.querySelectorAll('button');
-
-const ResetLeaderboardBtn = document.getElementById('reset-list');
-
 // Event Listeners
 BeginQuizBtn.addEventListener('click', function() {
     LandingSection.hidden = true;
@@ -153,36 +177,15 @@ BeginQuizBtn.addEventListener('click', function() {
 
 ResultReturnBtn.addEventListener('click', function() {
    ResultSection.hidden = true;
-   LandingSection = false; 
+   LandingSection.hidden = false; 
 });
 
 LeaderboardReturnBtn.addEventListener('click', function() {
     LeaderboardSection.hidden = true;
-    LandingSection = false;
+    LandingSection.hidden = false;
 });
 
-QuizOptions.addEventListener('click', SelectOption());
-
-// Initialization of Local Storage for leaderboard
-var lsInitLeaderboard = JSON.parse(localStorage.getItem('leaderboard'));
-if (lsInitLeaderboard == null) {
-    localStorage.setItem('leaderboard', JSON.stringify([]));
-}
-
-// Initialization of Local Storage for Questions
-const QuizQuestions = JSON.parse(localStorage.getItem('questions'));
-if (QuizQuestions == null) {
-    var questions = [
-        new QuestionSet(
-            'What statement is used for conditional branching?',
-            'if',
-            'while',
-            'then',
-            'when',
-            1
-        )
-    ];
-    localStorage.setItem('questions', JSON.stringify(questions));
-}
-
-var QuestionNum = 0;
+QuizSection.children[1].addEventListener('click', SelectOption);
+QuizSection.children[2].addEventListener('click', SelectOption);
+QuizSection.children[3].addEventListener('click', SelectOption);
+QuizSection.children[4].addEventListener('click', SelectOption);

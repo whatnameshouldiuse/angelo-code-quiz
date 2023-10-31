@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./asset/reset.css">
     <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
+    <header id="Timer">
+
+    </header>
     <section id="Landing">
         <h1>Coding Quiz Challenge</h1>
         <p>Answer as many coding questions within the time limit!</p>
@@ -23,7 +25,7 @@
     <section id="Result" hidden>
         <h1>You finished the quiz!</h1>
         <h2>Your score: <span></span></h2>
-        <input type="text" placeholder="Register Leaderboard"/>
+        <input type="text" placeholder="Enter your name" onkeydown="RegisterLeaderboard(this)"/>
         <button id="result-return-start">Return to Start</button>
     </section>
     <section id="Leaderboard" hidden>
