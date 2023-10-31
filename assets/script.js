@@ -48,7 +48,80 @@ if (IsInitQuestions == null) {
             'then',
             'when',
             1
-        )
+        ),
+        new QuestionSet(
+            'What is NOT a correct way of defining a function?',
+            'function name(parameter1)',
+            'public static void main(args)',
+            'let name = function(parameter1)',
+            '(parameter1) =>',
+            2
+        ),
+        new QuestionSet(
+            'What declaration should be used for variables that cannot be updated?',
+            'const',
+            'var',
+            'define',
+            'let',
+            1
+        ),
+        new QuestionSet(
+            'Which of the following was created to standardize the use of JavaScript code?',
+            'JSStandards',
+            'TypeScript',
+            'ECMAScript',
+            'UniversalJS',
+            3
+        ),
+        new QuestionSet(
+            'What is a programming technique that allows for a task to run without interrupting the main thread?',
+            'Synchronous Programming',
+            'Task Oriented Programming',
+            'Entity-Component-System',
+            'Asynchronous Programming',
+            4
+        ),
+        
+        new QuestionSet(
+            'Which of the following is not a valid way of commenting in JavaScript?',
+            '//This is a comment',
+            '/*This is a comment*/',
+            '/** This is a comment */',
+            '# This is a comment',
+            4
+        ),
+        new QuestionSet(
+            'Which of the following is used to add a new element to the end of an array in JavaScript?',
+            'array.unshift()',
+            'array.push()',
+            'array.pop()',
+            'array.append()',
+            2
+        ),
+        new QuestionSet(
+            'What does DOM stand for in the context of web development?',
+            'Document Object Model',
+            'Dynamic Object Manipulation',
+            'Data Object Model',
+            'Document Order Manager',
+            1
+        ),
+        new QuestionSet(
+            'Which of the following is true about JavaScript\'s \'==\' and \'===\' operators?',
+            '\'==\' compares values for equality, \'===\' compares both values and types',
+            '\'==\' compares values and types for equality, \'===\' compares values only',
+            '\'==\' compares values only, \'===\' compares values and types',
+            '\'==\' and \'===\' are interchangeable and can be used interchangeably',
+            3
+        ),
+        new QuestionSet(
+            'What is the primary purpose of JavaScript?',
+            'Document styling',
+            'Server-side scripting',
+            'Client-side scripting',
+            'Video editing',
+            3
+        ),
     ];
     localStorage.setItem('questions', JSON.stringify(questions));
 }
@@ -62,7 +135,7 @@ let StartQuiz = function() {
     QuestionNum = 0;
     Score = 0;
     DisplayQuestion();
-    var time = 90;
+    var time = 60;
     TimerHeader.textContent = 'Time Left: ' + time;
     QuizTimer = setInterval(function() {
         time--;
@@ -115,15 +188,15 @@ let SelectOption = function(event) {
     } else {
         QuizSection.classList.add('mark-wrong');
     }
-    var secondDelay = 2;
+    var delay = 1;
     var nextQuestionDelay = setInterval(() => {
-        secondDelay--;
-        if (secondDelay == 0) {
+        delay--;
+        if (delay == 0) {
             clearInterval(nextQuestionDelay);
             QuestionNum++;
             DisplayQuestion();
         }
-    }, 1000);
+    }, 1500);
 }
 
 let EndQuiz = function() {
