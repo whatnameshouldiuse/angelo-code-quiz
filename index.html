@@ -8,34 +8,36 @@
 </head>
 <body>
     <header id="Timer">
-
+        
     </header>
-    <section id="Landing">
-        <h1>Coding Quiz Challenge</h1>
-        <p>Answer as many coding questions within the time limit!</p>
-        <button id="begin-quiz">Start the Quiz!</button>
-    </section>
-    <section id="Quiz" hidden>
-        <h1>Question</h1>
-        <button id="option-1">Option 1</button>
-        <button id="option-2">Option 2</button>
-        <button id="option-3">Option 3</button>
-        <button id="option-4">Option 4</button>
-    </section>
-    <section id="Result" hidden>
-        <h1>You finished the quiz!</h1>
-        <h2>Your score: <span></span></h2>
-        <input type="text" placeholder="Enter your name" onkeydown="RegisterLeaderboard(this)"/>
-        <button id="result-return-start">Return to Start</button>
-    </section>
-    <section id="Leaderboard" hidden>
-        <h1>High Scores</h1>
-        <ol id="high-score-list">
-
-        </ol>
-        <button id="list-return-start">Return to Start</button>
-        <button id="reset-list">Reset Leaderboard</button>
-    </section>
+    <div class="container">
+        <section id="Landing">
+            <h1>Coding Quiz Challenge</h1>
+            <p>Answer as many coding questions within the time limit!</p>
+            <button id="begin-quiz">Start the Quiz!</button>
+        </section>
+        <section id="Quiz" hidden>
+            <h1>Question</h1>
+            <button id="option-1">Option 1</button>
+            <button id="option-2">Option 2</button>
+            <button id="option-3">Option 3</button>
+            <button id="option-4">Option 4</button>
+        </section>
+        <section id="Result" hidden>
+            <h1>You finished the quiz!</h1>
+            <h2>Your score: <span></span></h2>
+            <input type="text" placeholder="Enter your name" onkeydown="RegisterLeaderboard(this)"/>
+            <button id="result-return-start">Return to Start</button>
+        </section>
+        <section id="Leaderboard" hidden>
+            <h1>High Scores</h1>
+            <ol id="high-score-list">
+    
+            </ol>
+            <button id="list-return-start">Return to Start</button>
+            <button id="reset-list">Reset Leaderboard</button>
+        </section>
+    </div>
     <script src="./assets/script.js"></script>
 </body>
 </html>

@@ -63,6 +63,7 @@ let StartQuiz = function() {
     Score = 0;
     DisplayQuestion();
     var time = 90;
+    TimerHeader.textContent = 'Time Left: ' + time;
     QuizTimer = setInterval(function() {
         time--;
         TimerHeader.textContent = 'Time Left: ' + time;
@@ -91,6 +92,7 @@ let ApplyQuestion = function(question) {
     var allOptions = QuizSection.querySelectorAll('button');
     allOptions.forEach((option) => {
         option.classList.remove('correct-answer', 'selected');
+        option.disabled = false;
     })
     QuizSection.children[question.correctAnswer].classList.add("correct-answer");
 
@@ -102,6 +104,10 @@ let ApplyQuestion = function(question) {
 }
 
 let SelectOption = function(event) {
+    var allOptions = QuizSection.querySelectorAll('button');
+    allOptions.forEach((option) => {
+        option.disabled = true;
+    })
     event.currentTarget.classList.add('selected');
     if (event.currentTarget.classList.contains('correct-answer')) {
         QuizSection.classList.add('mark-correct');
@@ -124,6 +130,7 @@ let EndQuiz = function() {
     QuizSection.hidden = true;
     ResultSection.hidden = false;
     ResultSection.querySelector('h2').querySelector('span').textContent = Score;
+    TimerHeader.textContent = "";
 }
 
 let registerLeaderboard = function(El) {
